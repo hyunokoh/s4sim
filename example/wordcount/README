@@ -1,1 +1,3 @@
 You need to compile wordcount_isp.c using arm cross compiler and store the binary of which name is "wordcount_isp".
+
+wordcount_par_isp containsppthread implemetnation. In SE mode of gem5, gem5 specific thread code is required which is avilable in external/m5threads.
