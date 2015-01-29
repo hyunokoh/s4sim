@@ -4,6 +4,11 @@
 
 #include <stdio.h>
 
+// File related data structure
+#define PAGE_SIZE 1024  
+#define NUM_BUFFERS 1
+char s4Buffer[PAGE_SIZE*NUM_BUFFERS];
+
 // File related functions
 FILE *
 s4_fopen(const char * filename, const char * mode);
@@ -16,6 +21,9 @@ s4_rewind(FILE *stream);
 
 size_t
 s4_fread(void * ptr, size_t size, size_t nitems, FILE * stream);
+
+size_t
+s4_pageread(size_t pageStartNumber, size_t numPages, FILE * stream);
 
 size_t
 s4_fwrite(const void * ptr, size_t size, size_t nitems, FILE * stream);

@@ -280,9 +280,9 @@ isp_int ispRunBinaryFile(isp_device_id device_id, const char* program_file_name,
 {
 	char command[1024];
 	if(program_argument)
-		sprintf(command,"%s %s -c %s -o \"%s \" --output=%s > gem5_result.txt",GEM5_EXECFILE, GEM5_PLATFORM, program_file_name, program_argument, program_output_file);
+		sprintf(command,"%s %s -n %d -c %s -o \"%s \" --output=%s > gem5_result.txt",GEM5_EXECFILE, GEM5_PLATFORM, GEM5_NUMPROCS,program_file_name, program_argument, program_output_file);
 	else
-		sprintf(command,"%s %s -c %s --output=%s > gem5_result.txt", GEM5_EXECFILE, GEM5_PLATFORM, program_file_name, program_output_file);
+		sprintf(command,"%s %s -n %d -c %s --output=%s > gem5_result.txt", GEM5_EXECFILE, GEM5_PLATFORM, GEM5_NUMPROCS, program_file_name, program_output_file);
 
 	printf("%s\n",command);
 	system(command);

@@ -16,8 +16,11 @@ int main(int argc, const char* argv[])
         //ispGetDeviceIDs(NULL, ISP_DEVICE_TYPE_STORAGE, 1, &device, NULL);
 
         // read an ISP binary file from argument
+#ifdef PAR
 	cycle = ispRunBinaryFile(device, "./wordcount_isp", "int wordcount.c", "output.txt");
-
+#else
+	cycle = ispRunBinaryFile(device, "./wordcount_par_isp", "int wordcount.c", "output.txt");
+#endif
 	// print out the result from the ISP program
 	system("cat output.txt");
 
