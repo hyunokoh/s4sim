@@ -1,0 +1,1 @@
+You need to compile wordcount_isp.c using arm cross compiler and store the binary of which name is "wordcount_isp".
