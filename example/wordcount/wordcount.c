@@ -17,7 +17,7 @@ int main(int argc, const char* argv[])
 
         // read an ISP binary file from argument
 #ifndef PAR
-	cycle = ispRunBinaryFile(device, "./wordcount_isp", "int wordcount.c", "output.txt");
+	cycle = ispRunBinaryFile(device, "./wordcount_isp", "int wordcount_isp", "output.txt");
 #else
 	cycle = ispRunBinaryFile(device, "./wordcount_par_isp", "int wordcount.c", "output.txt");
 #endif

@@ -17,6 +17,8 @@ static int callbackfd = 0;
 static pthread_t p_thread;
 void* callbackFunctionHandler(void* data);
 
+int getTickCycle(const char* theFileName);
+
 void sendS4(const char* theString)
 {
 	write(sockfd,theString,strlen(theString));
@@ -289,7 +291,21 @@ isp_int ispRunBinaryFile(isp_device_id device_id, const char* program_file_name,
 
 	// read gem5_result.txt to obtain the isp program cycles and return it.
 	// TODO ...
-	system("grep Exiting gem5_result.txt | sed 's/^[A-z @]*//' > gem5_cycle.txt");
+	int cycle;
+	cycle = getTickCycle("gem5_result.txt");
+	cycle += getTickCycle("io_stat.txt");
+
+	return cycle;
+
+}
+
+
+int getTickCycle(const char* theFileName)
+{
+	char command[1024];
+
+	sprintf(command, "grep Exiting %s | sed 's/^[A-z @]*//' > gem5_cycle.txt", theFileName);
+	system(command);
 	FILE* ifp;
 	char buffer[1024];
 	ifp = fopen("gem5_cycle.txt","r");
@@ -307,12 +323,12 @@ isp_int ispRunBinaryFile(isp_device_id device_id, const char* program_file_name,
 	
 	int cycle = 0;
 	if(index>0) cycle = atoi(buffer);
+	system("rm gem5_cycle.txt");
 		
 
-	system("rm gem5_result.txt");
-	system("rm gem5_cycle.txt");
+	sprintf(command,"rm %s", theFileName);
+	system(command);
 
-	// search for 
 	return cycle; 
 }
 

@@ -4,6 +4,28 @@
 
 #include "s4.h"
 
+// unit is pico second
+//#define S4_FLASH_READ_LATENCY 200000000
+#define S4_FLASH_READ_LATENCY 0
+
+int s4_tick_time; 
+
+void s4_spend_time(int theTick)
+{
+	s4_tick_time += theTick;
+}
+
+void s4_init_simulation()
+{
+	s4_tick_time = 0;
+}
+
+void s4_wrapup_simulation()
+{
+	FILE* stat = fopen("io_stat.txt","w");
+	fprintf(stat, "Exiting @ tick %d\n",s4_tick_time);
+}
+
 FILE *
 s4_fopen(const char * filename, const char * mode)
 {
@@ -31,10 +53,14 @@ s4_fread(void * ptr, size_t size, size_t nitems, FILE * stream)
 size_t
 s4_pageread(size_t pageStartNumber, size_t numPages, FILE * stream)
 {
-	int n = s4_fread(&s4Buffer[pageStartNumber],sizeof(char), PAGE_SIZE*numPages,stream);
+	int n = s4_fread(&s4_buffer[pageStartNumber],sizeof(char), S4_PAGE_SIZE*numPages,stream);
 
-	if(n%PAGE_SIZE==0) return n/PAGE_SIZE;
-	else return (n/PAGE_SIZE)+1;
+	// modeling for clock tick delay
+	// default read time for a page is  internally 200us
+	s4_spend_time(S4_FLASH_READ_LATENCY);
+
+	if(n%S4_PAGE_SIZE==0) return n/S4_PAGE_SIZE;
+	else return (n/S4_PAGE_SIZE)+1;
 }
 
 size_t
